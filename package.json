@@ -1,0 +1,46 @@
+{
+  "name": "ytdl-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/server.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.614.0",
+    "@aws-sdk/lib-storage": "^3.614.0",
+    "@aws-sdk/s3-request-presigner": "^3.614.0",
+    "@distube/ytdl-core": "^4.13.5",
+    "@ffmpeg-installer/ffmpeg": "^1.1.0",
+    "axios": "^1.6.8",
+    "body-parser": "^1.18.3",
+    "bullmq": "^5.8.7",
+    "chalk": "^4.1.2",
+    "cluster": "^0.7.7",
+    "cors": "^2.8.5",
+    "dotenv": "^8.6.0",
+    "express": "^4.16.4",
+    "ffmpeg-static": "^5.2.0",
+    "fluent-ffmpeg": "^2.1.2",
+    "fluent-ffmpeg-multistream": "^1.0.0",
+    "fs-extra": "^11.2.0",
+    "https-proxy-agent": "^7.0.4",
+    "ioredis": "^5.4.1",
+    "lru-cache": "^10.2.0",
+    "node-cron": "^3.0.3",
+    "node-fetch": "^3.3.2",
+    "slugify": "^1.6.6",
+    "stream": "^0.0.3",
+    "uuid": "^10.0.0",
+    "youtube-dl-exec": "^3.0.6",
+    "youtubei.js": "^9.4.0",
+    "ytdl-core": "^4.11.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}
