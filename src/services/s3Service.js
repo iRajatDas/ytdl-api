@@ -69,16 +69,13 @@ class S3Service {
   }
 
   async getFileUrl(key) {
-    // check if file exists
     const command = new ListObjectsCommand({ Bucket: this.S3_BUCKET });
     const response = await this.S3.send(command);
     const fileExists = response.Contents.some((obj) => obj.Key === key);
 
     if (!fileExists) {
-      // console log all keys in the bucket
       console.log("Files in bucket:");
       response.Contents.forEach((obj) => console.log(obj.Key));
-
       throw new Error(`File ${key} not found in bucket ${this.S3_BUCKET}`);
     }
 

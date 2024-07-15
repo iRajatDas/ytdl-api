@@ -1,3 +1,4 @@
+// services/youtubeService.js
 const youtubedl = require("youtube-dl-exec");
 const fs = require("fs-extra");
 const path = require("path");
@@ -20,7 +21,7 @@ class YouTubeService {
       );
       const output = await youtubedl(videoUrl, {
         format: `${format}[ext=mp4]+bestaudio[ext=m4a]/mp4`,
-        output: path.join(tempDir, `%(title)s_${quality}.%(ext)s`), // Adjusted output filename
+        output: path.join(tempDir, `%(title)s_${quality}.%(ext)s`),
         mergeOutputFormat: "mp4",
         restrictFilenames: true,
       });

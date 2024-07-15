@@ -12,7 +12,6 @@ class QueueService {
       "download-queue",
       async (job) => {
         const { videoUrl, quality } = job.data;
-        // Delegate the job processing to the YouTube service
         const youtubeService = require("./youtubeService");
         return youtubeService.downloadAndUploadVideo(videoUrl, quality);
       },
