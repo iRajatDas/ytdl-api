@@ -124,7 +124,7 @@ for quality in "${qualities[@]}"; do
     echo "Queueing video download for quality $quality..."
     response=$(curl -s -X POST "$BASE_URL/download" \
          -H "Content-Type: application/json" \
-         -d "{\"videoUrl\": \"https://www.youtube.com/watch?v=3SnOmNwqgLc\", \"quality\": \"$quality\"}")
+         -d "{\"videoUrl\": \"https://www.youtube.com/watch?v=aBvcg66gENc\", \"quality\": \"$quality\"}")
     job_id=$(echo $response | jq -r '.jobId')
     echo "Job ID: $job_id"
 
