@@ -8,6 +8,7 @@ const {
 } = require("@aws-sdk/client-s3");
 const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 const fs = require("fs-extra");
+const progressEmitter = require("../utils/progressEmitter");
 
 class S3Service {
   constructor() {
@@ -23,6 +24,11 @@ class S3Service {
   }
 
   async uploadFile(file, key) {
+    console.log(`Uploading file: ${file} with key: ${key}`);
+    progressEmitter.emit("progress", {
+      stage: "upload-start",
+      message: `Uploading file: ${file} with key: ${key}`,
+    });
     const params = {
       Bucket: this.S3_BUCKET,
       Key: key,
@@ -30,6 +36,11 @@ class S3Service {
     };
     await this.S3.send(new PutObjectCommand(params));
     console.log(`File uploaded successfully to ${this.S3_BUCKET}/${key}`);
+    progressEmitter.emit("progress", {
+      stage: "upload-complete",
+      message: `File uploaded successfully to ${this.S3_BUCKET}/${key}`,
+    });
+
     const signedUrl = await getSignedUrl(
       this.S3,
       new GetObjectCommand({
@@ -40,7 +51,21 @@ class S3Service {
         expiresIn: 3600,
       }
     );
-    return signedUrl;
+
+    console.log(`Generated signed URL: ${signedUrl}`);
+    progressEmitter.emit("progress", {
+      stage: "signed-url",
+      message: `Generated signed URL`,
+      url: signedUrl,
+    });
+
+    return { signedUrl, key };
+  }
+
+  async getStorageUsage() {
+    const command = new ListObjectsCommand({ Bucket: this.S3_BUCKET });
+    const response = await this.S3.send(command);
+    return response.Contents.reduce((total, obj) => total + obj.Size, 0);
   }
 
   async getFileUrl(key) {
@@ -68,12 +93,6 @@ class S3Service {
       }
     );
     return signedUrl;
-  }
-
-  async getStorageUsage() {
-    const command = new ListObjectsCommand({ Bucket: this.S3_BUCKET });
-    const response = await this.S3.send(command);
-    return response.Contents.reduce((total, obj) => total + obj.Size, 0);
   }
 
   async deleteFile(key) {

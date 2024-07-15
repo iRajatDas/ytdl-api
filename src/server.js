@@ -14,10 +14,14 @@ const MAX_STORAGE_GB = 50;
 app.use(express.json());
 
 app.post("/download", async (req, res) => {
-  const { videoUrl } = req.body;
+  const { videoUrl, quality } = req.body;
 
   if (!videoUrl) {
     return res.status(400).json({ error: "Video URL is required" });
+  }
+
+  if (!quality) {
+    return res.status(400).json({ error: "Video quality is required" });
   }
 
   try {
@@ -28,7 +32,7 @@ app.post("/download", async (req, res) => {
       return res.status(507).json({ error: "Insufficient storage space" });
     }
 
-    const job = await queueService.addDownloadJob(videoUrl);
+    const job = await queueService.addDownloadJob(videoUrl, quality);
     res.json({ message: "Download queued", jobId: job.id });
   } catch (error) {
     console.error("Error:", error);

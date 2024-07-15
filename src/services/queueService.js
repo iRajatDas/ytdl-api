@@ -11,10 +11,10 @@ class QueueService {
     this.worker = new Worker(
       "download-queue",
       async (job) => {
-        const { videoUrl } = job.data;
+        const { videoUrl, quality } = job.data;
         // Delegate the job processing to the YouTube service
         const youtubeService = require("./youtubeService");
-        return youtubeService.downloadAndUploadVideo(videoUrl);
+        return youtubeService.downloadAndUploadVideo(videoUrl, quality);
       },
       { connection: this.redisOptions }
     );
@@ -28,8 +28,8 @@ class QueueService {
     });
   }
 
-  async addDownloadJob(videoUrl) {
-    return this.queue.add("download", { videoUrl });
+  async addDownloadJob(videoUrl, quality) {
+    return this.queue.add("download", { videoUrl, quality });
   }
 
   async getJob(jobId) {
