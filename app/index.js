@@ -338,9 +338,9 @@ app.get("/download", async (req, res) => {
     // (Optional) http-cookie-agent / undici agent options
     // Below are examples, NOT the recommended options
     const agentOptions = {
-      pipelining: 5,
-      maxRedirections: 0,
-      localAddress: "127.0.0.1",
+      headers: {
+        referer: "https://www.youtube.com/",
+      },
     };
 
     // agent should be created once if you don't want to change your cookie
